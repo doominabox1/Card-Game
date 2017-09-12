@@ -1,5 +1,5 @@
-package client;
+package gui;
 
 public class Client {
-
+	
 }

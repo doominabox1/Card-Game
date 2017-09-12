@@ -1,4 +1,4 @@
-package server;
+package gui;
 
 public class Server {
 
