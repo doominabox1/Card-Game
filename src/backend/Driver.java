@@ -11,6 +11,7 @@ import javax.swing.WindowConstants;
 
 public class Driver {
 	
+	public static final String PORT = "4321";
 	static JFrame mainFrame;
 	
 	public static void main(String[] args){
@@ -36,7 +37,7 @@ public class Driver {
 	public static void server(){
 		System.out.println("Server");
 		
-		ServerPanel serverPanel = new ServerPanel();
+		ServerPanel serverPanel = new ServerPanel(PORT);
 		mainFrame.add(serverPanel);
 		
 		mainFrame.pack();
