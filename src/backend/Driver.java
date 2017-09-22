@@ -37,8 +37,9 @@ public class Driver {
 	public static void server(){
 		System.out.println("Server");
 		
-		ServerPanel serverPanel = new ServerPanel(PORT);
-		mainFrame.add(serverPanel);
+		Server server = new Server(PORT);
+		
+		mainFrame.add(server.getPanel());
 		
 		mainFrame.pack();
 		mainFrame.setLocationRelativeTo(null);
@@ -47,8 +48,9 @@ public class Driver {
 	public static void client(){
 		System.out.println("Client");
 		
-		ClientPanel clientPanel = new ClientPanel();
-		mainFrame.add(clientPanel);
+		Server client = new Server(PORT);
+		
+		mainFrame.add(client.getPanel());
 		
 		mainFrame.pack();
 		mainFrame.setLocationRelativeTo(null);

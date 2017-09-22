@@ -4,7 +4,7 @@ import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
 public class ClientPanel extends JPanel{
-	public ClientPanel(){
+	public ClientPanel(String port){
 		
 	}
 }
