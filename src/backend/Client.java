@@ -1,8 +1,15 @@
 package backend;
 
+import gui.ClientPanel;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.util.ArrayList;
 
-import gui.ClientPanel;
+import javax.swing.JOptionPane;
 
 public class Client {
 	public enum Players {
@@ -14,18 +21,77 @@ public class Client {
 	
 	ClientPanel panel;
 	
-	//	Game Data
-	ArrayList<Card> hand = new ArrayList<Card>();
-	int turn;	// Who's turn it is
-	Card[] playedCards;	// Cards on table
-	int[][] score; // score[PLAYER_ONE][TRICKS] score[PLAYER_TWO][CARD_TOTAL] for example
-	int serverStatus = 0; // Players connected, 3 means the game can start
-	int playerNumber;	// What player they are
-	//	Game Data
+	Player player;
 	
-	public Client(String port){
-		panel = new ClientPanel(port);
+	// Game data moved to player
+	
+	int port;
+	BufferedReader in;
+	PrintWriter out;
+	
+	public Client(int port) throws IOException{
+		this.port = port;
+		panel = new ClientPanel();
+		
+		listen();
+		broadcast();
 	}
+	
+	private synchronized void listen() throws IOException{
+		
+		// Make connection and initialize streams
+		String serverAddress = getServerAddress();
+		Socket socket = new Socket(serverAddress, port);
+		in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		out = new PrintWriter(socket.getOutputStream(), true);
+		
+		String line = in.readLine();
+		if(line.contains("NEW_PLAYER")){
+			player = new Player(Integer.parseInt(line.split(" ")[1]), null);
+		}else{
+			System.out.println("Error reading new player number: " + line);
+			System.exit(0);
+		}
+		
+		new Thread(){
+
+			public void run(){
+				try{
+					// Process all messages from server, according to the protocol.
+					while (true) {
+						String line = in.readLine();
+						System.out.println(line);
+					}
+				}catch(IOException e){
+					
+				}finally{
+					try {
+						socket.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}.start();
+	}
+	
+	private synchronized void broadcast() throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		while(out == null){}
+		while(true){
+			System.out.println("Please enter a line to send to the server:");
+			out.println(br.readLine());
+		}
+	}
+	
+	private String getServerAddress() {
+		return JOptionPane.showInputDialog(
+				null,
+				"Enter IP Address of the Server:",
+				"Welcome to the card game",
+				JOptionPane.QUESTION_MESSAGE);
+	}
+	
 	public ClientPanel getPanel(){
 		return panel;
 	}
