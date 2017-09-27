@@ -18,7 +18,7 @@ public class ServerPanel extends JPanel{
 	JLabel ipLabel = new JLabel("Default");
 	JLabel usersLabel = new JLabel("Default");
 	
-	public ServerPanel(String port){
+	public ServerPanel(){
 		
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));	// Set the panel to a vertical layout
 		setPreferredSize(new Dimension(640, 360));	// Set the size of the server panel

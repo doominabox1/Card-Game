@@ -40,7 +40,7 @@ public class Player {
 	private String getHandString(){
 		String output = "";
 		for(Card c : hand){
-			output += c.cardNumber + " ";
+			output += c.pos + " ";
 		}
 		return output.trim();
 	}

@@ -1,7 +1,6 @@
 package backend;
 
-import gui.ClientPanel;
-import gui.ServerPanel;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -11,10 +10,10 @@ import javax.swing.WindowConstants;
 
 public class Driver {
 	
-	public static final String PORT = "4321";
+	public static final int PORT = 4321;
 	static JFrame mainFrame;
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws IOException{
 		
 		mainFrame = new JFrame();
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -34,7 +33,7 @@ public class Driver {
 			System.exit(0);
 		}
 	}
-	public static void server(){
+	public static void server() throws IOException{
 		System.out.println("Server");
 		
 		Server server = new Server(PORT);
@@ -45,10 +44,10 @@ public class Driver {
 		mainFrame.setLocationRelativeTo(null);
 		mainFrame.setVisible(true);
 	}
-	public static void client(){
+	public static void client() throws IOException{
 		System.out.println("Client");
 		
-		Server client = new Server(PORT);
+		Client client = new Client(PORT);
 		
 		mainFrame.add(client.getPanel());
 		
