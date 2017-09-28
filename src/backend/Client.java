@@ -30,7 +30,7 @@ public class Client {
 	
 	public Client(int port) throws IOException{
 		this.port = port;
-		panel = new ClientPanel();
+		panel = new ClientPanel(null);
 		//listen();
 		//broadcast();
 	}
