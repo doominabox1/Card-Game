@@ -32,27 +32,21 @@ public class Driver {
 		}else{
 			System.exit(0);
 		}
+		mainFrame.pack();
+		mainFrame.setLocationRelativeTo(null);
+		mainFrame.setVisible(true);
 	}
 	public static void server() throws IOException{
 		System.out.println("Server");
 		
 		Server server = new Server(PORT);
-		
 		mainFrame.add(server.getPanel());
-		
-		mainFrame.pack();
-		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setVisible(true);
 	}
 	public static void client() throws IOException{
 		System.out.println("Client");
 		
 		Client client = new Client(PORT);
-		
 		mainFrame.add(client.getPanel());
-		
-		mainFrame.pack();
-		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setVisible(true);
+
 	}
 }

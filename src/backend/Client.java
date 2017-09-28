@@ -9,6 +9,7 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 public class Client {
 	public enum Players {
@@ -19,7 +20,6 @@ public class Client {
 	}
 	
 	ClientPanel panel;
-	
 	Player player;
 	
 	// Game data moved to player
@@ -31,9 +31,8 @@ public class Client {
 	public Client(int port) throws IOException{
 		this.port = port;
 		panel = new ClientPanel();
-		
-		listen();
-		broadcast();
+		//listen();
+		//broadcast();
 	}
 	
 	private synchronized void listen() throws IOException{
