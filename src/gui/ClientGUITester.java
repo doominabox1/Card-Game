@@ -16,7 +16,7 @@ public class ClientGUITester {
 		p1.hand = generateHand(10);
 		p1.turn = 0;
 		p1.playedCards = new Card[]{new Card(11), new Card(22), new Card(33)};
-		p1.score = new int[][]{{1,2},{3,4},{5,6}};
+		p1.score = new int[][]{{3,15},{6,17},{4,18}};
 		p1.serverStatus = 2;
 		
 		JFrame mainFrame = new JFrame();
