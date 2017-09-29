@@ -9,7 +9,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 
 public class Client {
 	public enum Players {
@@ -31,8 +30,7 @@ public class Client {
 	public Client(int port) throws IOException{
 		this.port = port;
 		panel = new ClientPanel(null);
-		//listen();
-		//broadcast();
+		listen();
 	}
 	
 	private synchronized void listen() throws IOException{
@@ -46,6 +44,7 @@ public class Client {
 		String line = in.readLine();
 		if(line.contains("NEW_PLAYER")){
 			player = new Player(Integer.parseInt(line.split(" ")[1]), null);
+			Driver.showClient(this);
 		}else{
 			System.out.println("Error reading new player number: " + line);
 			System.exit(0);
@@ -71,15 +70,6 @@ public class Client {
 				}
 			}
 		}.start();
-	}
-	
-	private synchronized void broadcast() throws IOException{
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		while(out == null){}
-		while(true){
-			System.out.println("Please enter a line to send to the server:");
-			out.println(br.readLine());
-		}
 	}
 	
 	private String getServerAddress() {

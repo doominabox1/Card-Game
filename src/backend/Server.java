@@ -8,26 +8,31 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class Server {
 	ServerPanel panel;
-	
 	int port;
-	private static HashSet<Player> players = new HashSet<Player>();
+	Server thisServer;
+	private static ArrayList<Player> players = new ArrayList<Player>();
 	
 	public Server(int port) throws IOException{
 		this.port = port;
 		panel = new ServerPanel();
-		
+		thisServer = this;
 		new Thread(){
 			public void run(){
 				try{
 					ServerSocket listener = new ServerSocket(port);
 					try {
-						while (true) {
-							new Handler(listener.accept()).start();
+						while (players.size() < 3) {
+							listener.setSoTimeout(1000);
+							try{
+								new Handler(listener.accept(), thisServer).start();
+							}catch(IOException e){}
 						}
+						broadcastMessage("All connected");
+						System.out.println("All connected");
 					} finally {
 						listener.close();
 					}
@@ -38,7 +43,19 @@ public class Server {
 		}.start();
 	}
 	
+	private void broadcastMessage(String message){
+		for(Player player : players){
+			player.writer.println(message);
+		}
+	}
+	private void updateClients(){
+		for(Player player : players){
+			player.writer.println(player.getPlayerPacket());
+		}
+	}
+	
 	private static class Handler extends Thread {
+		private Server server;
 		private Socket socket;
 		private BufferedReader in;
 		private PrintWriter out;
@@ -47,7 +64,8 @@ public class Server {
 		 * Constructs a handler thread, squirreling away the socket.
 		 * All the interesting work is done in the run method.
 		 */
-		public Handler(Socket socket) {
+		public Handler(Socket socket, Server server) {
+			this.server = server;
 			this.socket = socket;
 		}
 
@@ -71,9 +89,13 @@ public class Server {
 				
 				// Add new player to list
 				players.add(newPlayer);
-				for (Player player : players) {
-					player.writer.println(newPlayer + " has connected.");
+				server.panel.setPlayersConnected(players.size());
+				
+				for(Player player : players){
+					player.serverStatus = players.size();
 				}
+				
+				server.updateClients();
 
 				//	Listen loop
 				while (true) {
