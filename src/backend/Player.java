@@ -48,10 +48,15 @@ public class Player {
 		
 		return container.toJSONString();
 	}
-	public void updatePlayerData(String data) throws ParseException{	// Used by the client to update player info
+	public boolean updatePlayerData(String data){	// Used by the client to update player info
 		
 		JSONParser parser = new JSONParser();
-		Object obj = parser.parse(data);
+		Object obj = null;
+		try {
+			obj = parser.parse(data);
+		} catch (ParseException e) {
+			return false;
+		}
         JSONObject jsonData = (JSONObject)obj;
         
         turn = (int) jsonData.get("turn");
@@ -61,6 +66,7 @@ public class Player {
         parseHandString((String)jsonData.get("hand"));
         parsePlayedCardString((String)jsonData.get("playedCards"));
         parseScoreString((String)jsonData.get("score"));
+        return true;
 	}
 	private String getScoreString(){
 		String output = "";

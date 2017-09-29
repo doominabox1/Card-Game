@@ -9,17 +9,21 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Server {
 	ServerPanel panel;
 	int port;
 	Server thisServer;
+	int turn = -1;
 	private static ArrayList<Player> players = new ArrayList<Player>();
 	
 	public Server(int port) throws IOException{
 		this.port = port;
 		panel = new ServerPanel();
 		thisServer = this;
+		Random rand = new Random();
+		
 		new Thread(){
 			public void run(){
 				try{
@@ -33,6 +37,27 @@ public class Server {
 						}
 						broadcastMessage("All connected");
 						System.out.println("All connected");
+						
+						ArrayList<Card> deck = new ArrayList<Card>();	// New deck
+						for(int i = 0; i < 52; i++){	// Init the deck with all possible cards
+							deck.add(new Card(i));
+						}
+						
+						while(deck.size() > 1){	// This simulates passing random cards to each of the players in order 0>1>2>0>1>2>0>1>2 etc
+							for(Player player : players){
+								int cardPos = rand.nextInt(deck.size());	// Get the pos of a random card in the deck
+								player.hand.add(deck.get(cardPos));	// Add that card to the player hand
+								deck.remove(cardPos);	// Remove that card from the deck
+							}
+						}
+						turn = 0;// Set the initial turn state away from -1, which tells the client that game has begun
+						
+						updateClients();	// The game has started and player 1 can make their move
+						
+						while(true){
+							// main loop
+						}
+						
 					} finally {
 						listener.close();
 					}
@@ -49,6 +74,11 @@ public class Server {
 		}
 	}
 	private void updateClients(){
+		for(int i = 0; i < players.size(); i++){
+			players.get(i).serverStatus = players.size();
+			players.get(i).turn = turn;
+			players.get(i).playerNumber = i;
+		}
 		for(Player player : players){
 			player.writer.println(player.getPlayerPacket());
 		}
@@ -91,10 +121,6 @@ public class Server {
 				players.add(newPlayer);
 				server.panel.setPlayersConnected(players.size());
 				
-				for(Player player : players){
-					player.serverStatus = players.size();
-				}
-				
 				server.updateClients();
 
 				//	Listen loop
@@ -128,6 +154,8 @@ public class Server {
 					socket.close();
 				} catch (IOException e) {
 				}
+				server.panel.setPlayersConnected(players.size());
+				server.updateClients();
 			}
 		}
 	}
