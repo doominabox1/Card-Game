@@ -16,6 +16,9 @@ public class Server {
 	int port;
 	Server thisServer;
 	int turn = -1;
+	String curMessage = null;
+	public int[][] score; // score[PLAYER_ONE][TRICKS] score[PLAYER_TWO][CARD_TOTAL] for example
+	public Card[] playedCards;	// Cards on table
 	private static ArrayList<Player> players = new ArrayList<Player>();
 	
 	public Server(int port) throws IOException{
@@ -50,12 +53,36 @@ public class Server {
 								deck.remove(cardPos);	// Remove that card from the deck
 							}
 						}
+						int leader = 0;
+						int leadingSuit = 0;
 						turn = 0;// Set the initial turn state away from -1, which tells the client that game has begun
 						
 						updateClients();	// The game has started and player 1 can make their move
 						
-						while(true){
-							// main loop
+						while(true){	// If there is ever an inconsistency or error, we just wait for a new message
+							// Busy wait for a message from client
+							// The message should look like "0:::34" or in other words "player:::cardNum"
+							while(curMessage == null){try {Thread.sleep(100);} catch (InterruptedException e) {}}
+							String inputMessage = curMessage; // Copy the message and set the client message to null
+							curMessage = null;
+							
+							String[] parts = inputMessage.split(":::");
+							
+							if(!parts[0].equals(turn+"")){continue;}	// If the message was from the wrong player, error
+							
+							Card chosenCard = new Card(Integer.parseInt(parts[1]));	// Card number sent in the message
+							
+							if(!players.get(turn).hasCard(chosenCard.pos)){continue;}	// If the player does not have the card they chose, error
+							
+							if(turn == leader){
+								leadingSuit = chosenCard.getSuit();
+							}else if(chosenCard.getSuit() != leadingSuit && players.get(turn).hasSuit(leadingSuit)){
+								// If the player is not the leader, did not play a leading suit, and has a leading suit, error
+								continue;
+							}
+							
+							
+							
 						}
 						
 					} finally {
@@ -78,6 +105,8 @@ public class Server {
 			players.get(i).serverStatus = players.size();
 			players.get(i).turn = turn;
 			players.get(i).playerNumber = i;
+			players.get(i).score = score;
+			players.get(i).playedCards = playedCards;
 		}
 		for(Player player : players){
 			player.writer.println(player.getPlayerPacket());
@@ -130,11 +159,7 @@ public class Server {
 						return;
 					}
 					
-					System.out.println("Broadcasting: " + "Ping: " + message);
-					// Broadcast to all players
-					for (Player player : players) {
-						player.writer.println("Ping : " + message);
-					}
+					server.curMessage = newPlayer.playerNumber + ":::" + message;
 				}
 			} catch (IOException e) {
 				System.out.println(e);

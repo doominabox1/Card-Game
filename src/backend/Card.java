@@ -15,8 +15,7 @@ public class Card {
 	public void loadImage() {
 		try {
 			faces = ImageIO.read(new File("cards.jpg"));
-		}
-		catch (IOException e){
+		} catch (IOException e){
 			
 		}
 	}
@@ -35,12 +34,9 @@ public class Card {
 	public int getValue() {
 		return (pos % 13 + 2);
 	}
-	public void setValue(int pos) {
-		this.pos = pos;
-	}
-	/*
+	
 	public BufferedImage getCardImage() {
-		
+		return null;
 	}
-	*/
+	
 }

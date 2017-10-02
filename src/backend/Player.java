@@ -35,6 +35,23 @@ public class Player {
 		score = new int[][] {{0,0},{0,0},{0,0}};
 	}
 	
+	public boolean hasCard(int cardNumber){
+		for(Card c : hand){
+			if(c.pos == cardNumber){
+				return true;
+			}
+		}
+		return false;
+	}
+	public boolean hasSuit(int suit){
+		for(Card c : hand){
+			if(c.getSuit() == suit){
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	@SuppressWarnings("unchecked")
 	public String getPlayerPacket(){	// Used by the server to send user data to client
 		JSONObject container = new JSONObject();
