@@ -27,26 +27,26 @@ public class Driver {
 		int result = JOptionPane.showOptionDialog(null, panel, "Choose a type.", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,null, options, null);
 		if(result == JOptionPane.YES_OPTION){
 			server();
+			mainFrame.pack();
+			mainFrame.setLocationRelativeTo(null);
+			mainFrame.setVisible(true);
 		}else if(result == JOptionPane.NO_OPTION){
 			client();
 		}else{
 			System.exit(0);
 		}
-		mainFrame.pack();
-		mainFrame.setLocationRelativeTo(null);
-		mainFrame.setVisible(true);
 	}
 	public static void server() throws IOException{
-		System.out.println("Server");
-		
 		Server server = new Server(PORT);
 		mainFrame.add(server.getPanel());
 	}
 	public static void client() throws IOException{
-		System.out.println("Client");
-		
-		Client client = new Client(PORT);
+		new Client(PORT);
+	}
+	public static void showClient(Client client){
 		mainFrame.add(client.getPanel());
-
+		mainFrame.pack();
+		mainFrame.setLocationRelativeTo(null);
+		mainFrame.setVisible(true);
 	}
 }

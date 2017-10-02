@@ -33,7 +33,7 @@ public class ServerPanel extends JPanel{
 			ipLabel.setText("Please check network connection.");	// Give error
 		}
 		
-		usersLabel.setText("2/3 connected.");	// TODO make this actually display the number of users
+		usersLabel.setText("0/3 connected.");	// TODO make this actually display the number of users
 		
 		ipLabel.setFont(new Font("Serif", Font.PLAIN, 30));	// Set font size
 		usersLabel.setFont(new Font("Serif", Font.PLAIN, 26));
@@ -42,6 +42,10 @@ public class ServerPanel extends JPanel{
 		add(ipLabel);
 		add(usersLabel);
 		add( Box.createVerticalGlue() );
+	}
+	
+	public void setPlayersConnected(int players){
+		usersLabel.setText(players + "/3 connected.");
 	}
 	
 	
