@@ -32,8 +32,26 @@ public class Card {
 	public int getSuit() {
 		return (pos/13);
 	}
+	public String getSuitString() {
+		switch(pos/13) {
+		case 0: return "Clubs";
+		case 1: return "Diamonds";
+		case 2: return "Hearts";
+		case 3: return "Spades";
+		default: return "Error";
+		}
+	}
 	public int getValue() {
 		return (pos % 13 + 2);
+	}
+	public String getValString() {
+		switch(pos % 13 + 2) {
+		case 11: return "J";
+		case 12: return "Q";
+		case 13: return "K";
+		case 14: return "A";
+		default: return Integer.toString(pos % 13 + 2);
+		}
 	}
 	public void setValue(int pos) {
 		this.pos = pos;
