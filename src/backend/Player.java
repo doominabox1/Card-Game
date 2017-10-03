@@ -1,7 +1,12 @@
 package backend;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+
+import javax.imageio.ImageIO;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;

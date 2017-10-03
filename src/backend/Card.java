@@ -1,5 +1,6 @@
 package backend;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,26 +9,21 @@ import javax.imageio.ImageIO;
 
 public class Card {
 	
+	public static final int CARD_WIDTH = 72;
+	public static final int CARD_HEIGHT = 96;
 	int pos;
-	String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
-	
-	BufferedImage faces = null; 
-	
-	public void loadImage() {
-		try {
-			faces = ImageIO.read(new File("cards.jpg"));
-		}
-		catch (IOException e){
-			
-		}
-	}
+	String[] suits = {"Club", "Spade", "Heart", "Diamond"};
+	BufferedImage face = null; 
 	
 	public Card(int pos) {
 		this.pos = pos;
-	}
-	
-	public Card() {
-		pos = 0;
+		
+		try {
+			BufferedImage sheet = ImageIO.read(new File("res\\cards.png"));
+			face = sheet.getSubimage((getValue()-2) * CARD_WIDTH, getSuit() * CARD_HEIGHT, CARD_WIDTH, CARD_HEIGHT);
+		}catch (IOException e){
+			e.printStackTrace();
+		}
 	}
 	
 	public int getSuit() {
@@ -48,19 +44,16 @@ public class Card {
 		default: return Integer.toString(pos % 13 + 2);
 		}
 	}
-	public void setValue(int pos) {
-		this.pos = pos;
-	}
-	/*
-	public BufferedImage getCardImage() {
-		
-	}
-	*/
 	@Override
 	public boolean equals(Object o) {
 	    if(o.getClass() != getClass()){
 	    	return false;
 	    }
 	    return pos == ((Card)o).pos; 
+	}
+
+
+	public Image getFace() {
+		return face;
 	}
 }

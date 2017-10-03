@@ -1,8 +1,8 @@
 package backend;
 
-import gui.ClientPanel;
 import gui.TestClientPanel;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -20,7 +20,7 @@ public class Client {
 	}
 	
 	TestClientPanel panel;
-	Player player;
+	public Player player;
 	
 	// Game data moved to player
 	
@@ -68,6 +68,7 @@ public class Client {
 						if(line.charAt(0) == '{'){
 							player.updatePlayerData(line);
 						}
+						panel.updatePanel();
 						panel.showText(line);
 						//System.out.println(line);
 					}
