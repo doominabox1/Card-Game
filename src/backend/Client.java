@@ -1,6 +1,7 @@
 package backend;
 
 import gui.ClientPanel;
+import gui.TestClientPanel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +19,7 @@ public class Client {
 	    TRICKS, CARD_TOTAL
 	}
 	
-	ClientPanel panel;
+	TestClientPanel panel;
 	Player player;
 	
 	// Game data moved to player
@@ -29,8 +30,12 @@ public class Client {
 	
 	public Client(int port) throws IOException{
 		this.port = port;
-		panel = new ClientPanel(null);
+		panel = new TestClientPanel(this);
 		listen();
+	}
+	
+	public void sendCard(String card){
+		out.println(card);
 	}
 	
 	private synchronized void listen() throws IOException{
@@ -63,7 +68,8 @@ public class Client {
 						if(line.charAt(0) == '{'){
 							player.updatePlayerData(line);
 						}
-						System.out.println(line);
+						panel.showText(line);
+						//System.out.println(line);
 					}
 				}catch(IOException e){
 					
@@ -86,7 +92,7 @@ public class Client {
 				JOptionPane.QUESTION_MESSAGE);
 	}
 	
-	public ClientPanel getPanel(){
+	public TestClientPanel getPanel(){
 		return panel;
 	}
 }

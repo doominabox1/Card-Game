@@ -56,4 +56,11 @@ public class Card {
 		
 	}
 	*/
+	@Override
+	public boolean equals(Object o) {
+	    if(o.getClass() != getClass()){
+	    	return false;
+	    }
+	    return pos == ((Card)o).pos; 
+	}
 }

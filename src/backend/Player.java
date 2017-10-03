@@ -10,8 +10,8 @@ import org.json.simple.parser.ParseException;
 public class Player {
 	public PrintWriter writer;
 	
-	public final int TRICKS = 0;
-	public final int CARD_TOTAL = 1;
+	public static final int TRICKS = 0;
+	public static final int CARD_TOTAL = 1;
 	
 	public final int PLAYER_ONE = 0;
 	public final int PLAYER_TWO = 1;
@@ -152,5 +152,15 @@ public class Player {
 	
 	public String toString(){
 		return "Player " + playerNumber;
+	}
+
+	public void removeCard(Card chosenCard) {
+		Card cardToRemove = null;
+		for(Card c : hand){
+			if(c.equals(chosenCard)){
+				cardToRemove = c;
+			}
+		}
+		hand.remove(cardToRemove);
 	}
 }

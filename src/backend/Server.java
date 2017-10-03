@@ -54,35 +54,65 @@ public class Server {
 							}
 						}
 						int leader = 0;
-						int leadingSuit = 0;
+						int leadingSuit = -1;
 						turn = 0;// Set the initial turn state away from -1, which tells the client that game has begun
 						
 						updateClients();	// The game has started and player 1 can make their move
 						
 						while(true){	// If there is ever an inconsistency or error, we just wait for a new message
+							
+							if(turn == leader && leadingSuit != -1){	// A full round has happened
+								int highestCard = turn;
+								int tempTurn = leader;
+								if(++tempTurn >= 3) tempTurn = 0;
+								while(tempTurn != leader){
+									Card curCard = playedCards[highestCard];
+									if(playedCards[tempTurn].getSuit() == curCard.getSuit() && playedCards[tempTurn].getValue() > curCard.getValue()){
+										highestCard = tempTurn;
+									}
+									if(++tempTurn >= 3) tempTurn = 0;
+								}
+								score[highestCard][Player.TRICKS]++;
+								score[highestCard][Player.CARD_TOTAL] += playedCards[highestCard].getValue();
+								
+								if(players.get(0).hand.size() < 1){
+									// Game is over
+								}
+								
+								leader = highestCard;
+								turn = leader;
+								leadingSuit = -1;
+								playedCards = new Card[3];
+								updateClients();
+							}
+							
 							// Busy wait for a message from client
 							// The message should look like "0:::34" or in other words "player:::cardNum"
 							while(curMessage == null){try {Thread.sleep(100);} catch (InterruptedException e) {}}
 							String inputMessage = curMessage; // Copy the message and set the client message to null
 							curMessage = null;
+							System.out.println(inputMessage);
 							
 							String[] parts = inputMessage.split(":::");
 							
-							if(!parts[0].equals(turn+"")){continue;}	// If the message was from the wrong player, error
+							if(!parts[0].equals(turn+"")){System.out.println("Wrong player");continue;}	// If the message was from the wrong player, error
 							
 							Card chosenCard = new Card(Integer.parseInt(parts[1]));	// Card number sent in the message
 							
-							if(!players.get(turn).hasCard(chosenCard.pos)){continue;}	// If the player does not have the card they chose, error
+							if(!players.get(turn).hasCard(chosenCard.pos)){System.out.println("Wrong card");continue;}	// If the player does not have the card they chose, error
 							
 							if(turn == leader){
 								leadingSuit = chosenCard.getSuit();
 							}else if(chosenCard.getSuit() != leadingSuit && players.get(turn).hasSuit(leadingSuit)){
 								// If the player is not the leader, did not play a leading suit, and has a leading suit, error
+								System.out.println("Can play leading suit");
 								continue;
 							}
-							
-							
-							
+							System.out.println("Passed inspection");
+							playedCards[turn] = chosenCard;
+							players.get(turn).removeCard(chosenCard);
+							if(++turn >= 3) turn = 0;
+							updateClients();
 						}
 						
 					} finally {
