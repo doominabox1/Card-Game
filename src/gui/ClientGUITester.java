@@ -23,7 +23,7 @@ public class ClientGUITester {
 		mainFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		mainFrame.setSize(1280, 720);
 		
-		mainFrame.add(new ClientPanel(p1));
+		//mainFrame.add(new ClientPanel(p1));
 		
 		mainFrame.pack();
 		mainFrame.setLocationRelativeTo(null);

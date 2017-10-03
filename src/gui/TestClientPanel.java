@@ -47,7 +47,7 @@ public class TestClientPanel extends JPanel{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(input.getText().length() > 0){
-					client.sendCard(input.getText());
+					//client.sendCard(input.getText());
 					input.setText("");
 				}
 			}

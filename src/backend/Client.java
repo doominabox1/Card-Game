@@ -1,8 +1,8 @@
 package backend;
 
+import gui.ClientPanel;
 import gui.TestClientPanel;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,7 +19,7 @@ public class Client {
 	    TRICKS, CARD_TOTAL
 	}
 	
-	TestClientPanel panel;
+	ClientPanel panel;
 	public Player player;
 	
 	// Game data moved to player
@@ -30,12 +30,12 @@ public class Client {
 	
 	public Client(int port) throws IOException{
 		this.port = port;
-		panel = new TestClientPanel(this);
+		panel = new ClientPanel(this);
 		listen();
 	}
 	
-	public void sendCard(String card){
-		out.println(card);
+	public void sendCard(int pos){
+		out.println(player.hand.get(pos).pos);
 	}
 	
 	private synchronized void listen() throws IOException{
@@ -69,8 +69,6 @@ public class Client {
 							player.updatePlayerData(line);
 						}
 						panel.updatePanel();
-						panel.showText(line);
-						//System.out.println(line);
 					}
 				}catch(IOException e){
 					
@@ -86,14 +84,15 @@ public class Client {
 	}
 	
 	private String getServerAddress() {
-		return JOptionPane.showInputDialog(
-				null,
-				"Enter IP Address of the Server:",
-				"Welcome to the card game",
-				JOptionPane.QUESTION_MESSAGE);
+		String input = JOptionPane.showInputDialog(
+						null,
+						"Enter IP Address of the Server:",
+						"Welcome to the card game",
+						JOptionPane.QUESTION_MESSAGE);
+		return input.length() == 0 ? "localhost" : input;
 	}
 	
-	public TestClientPanel getPanel(){
+	public ClientPanel getPanel(){
 		return panel;
 	}
 }
