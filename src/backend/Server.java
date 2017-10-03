@@ -53,6 +53,8 @@ public class Server {
 								deck.remove(cardPos);	// Remove that card from the deck
 							}
 						}
+						
+						int winningPlayer = 0;
 						int leader = 0;
 						int leadingSuit = -1;
 						turn = 0;// Set the initial turn state away from -1, which tells the client that game has begun
@@ -76,7 +78,12 @@ public class Server {
 								score[highestCard][Player.CARD_TOTAL] += playedCards[highestCard].getValue();
 								
 								if(players.get(0).hand.size() < 1){
-									// Game is over
+									for(int i = 0; i < 3; i++){
+										if(score[i][Player.TRICKS] * 1000 + score[i][Player.CARD_TOTAL] > score[winningPlayer][Player.TRICKS] * 1000 + score[winningPlayer][Player.CARD_TOTAL]){
+											winningPlayer = i;
+										}
+									}
+									break;
 								}
 								
 								leader = highestCard;
@@ -114,6 +121,8 @@ public class Server {
 							if(++turn >= 3) turn = 0;
 							updateClients();
 						}
+						
+						broadcastMessage("Player " + winningPlayer + " wins.");
 						
 					} finally {
 						listener.close();
