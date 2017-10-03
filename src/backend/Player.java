@@ -76,9 +76,9 @@ public class Player {
 		}
         JSONObject jsonData = (JSONObject)obj;
         
-        turn = (int) jsonData.get("turn");
-        playerNumber = (int) jsonData.get("playerNumber");
-        serverStatus = (int) jsonData.get("serverStatus");
+        turn = ((Long)jsonData.get("turn")).intValue();
+        playerNumber = ((Long)jsonData.get("playerNumber")).intValue();
+        serverStatus = ((Long)jsonData.get("serverStatus")).intValue();
         
         parseHandString((String)jsonData.get("hand"));
         parsePlayedCardString((String)jsonData.get("playedCards"));
@@ -139,8 +139,12 @@ public class Player {
 		return output.trim();
 	}
 	private void parseHandString(String inputHand){
-		String[] input = inputHand.split(" ");
 		hand = new ArrayList<Card>();
+		if(inputHand.length() < 1){
+			return;
+		}
+		String[] input = inputHand.split(" ");
+		
 		for(String s : input){
 			hand.add(new Card(Integer.parseInt(s)));
 		}

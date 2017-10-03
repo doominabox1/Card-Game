@@ -17,8 +17,8 @@ public class Server {
 	Server thisServer;
 	int turn = -1;
 	String curMessage = null;
-	public int[][] score; // score[PLAYER_ONE][TRICKS] score[PLAYER_TWO][CARD_TOTAL] for example
-	public Card[] playedCards;	// Cards on table
+	public int[][] score = new int[][] {{0,0},{0,0},{0,0}}; // score[PLAYER_ONE][TRICKS] score[PLAYER_TWO][CARD_TOTAL] for example
+	public Card[] playedCards = new Card[3];	// Cards on table
 	private static ArrayList<Player> players = new ArrayList<Player>();
 	
 	public Server(int port) throws IOException{

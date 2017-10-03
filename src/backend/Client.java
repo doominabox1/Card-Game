@@ -57,6 +57,9 @@ public class Client {
 					// Process all messages from server, according to the protocol.
 					while (true) {
 						String line = in.readLine();
+						if(line == null){
+							continue;
+						}
 						if(line.charAt(0) == '{'){
 							player.updatePlayerData(line);
 						}

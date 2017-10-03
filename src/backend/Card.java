@@ -9,6 +9,7 @@ import javax.imageio.ImageIO;
 public class Card {
 	
 	int pos;
+	String[] suits = {"Clubs", "Diamonds", "Hearts", "Spades"};
 	
 	BufferedImage faces = null; 
 	
@@ -33,13 +34,7 @@ public class Card {
 		return (pos/13);
 	}
 	public String getSuitString() {
-		switch(pos/13) {
-		case 0: return "Clubs";
-		case 1: return "Diamonds";
-		case 2: return "Hearts";
-		case 3: return "Spades";
-		default: return "Error";
-		}
+		return suits[getSuit()];
 	}
 	public int getValue() {
 		return (pos % 13 + 2);
