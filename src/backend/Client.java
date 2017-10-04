@@ -1,7 +1,6 @@
 package backend;
 
 import gui.ClientPanel;
-import gui.TestClientPanel;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -68,7 +67,7 @@ public class Client {
 						if(line.charAt(0) == '{'){
 							player.updatePlayerData(line);
 						}
-						panel.updatePanel();
+						panel.repaint();
 					}
 				}catch(IOException e){
 					
