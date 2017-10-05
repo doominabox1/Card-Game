@@ -32,6 +32,8 @@ public class ClientPanel extends JComponent{
 	private static final Font FONT_NAMES = new Font("Helvetica", Font.BOLD, 16);
 	private static final Font FONT_SERVER_MESSAGE = new Font("Helvetica", Font.BOLD, 24);
 	
+	
+	
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);

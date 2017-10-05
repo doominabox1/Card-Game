@@ -88,6 +88,9 @@ public class Client {
 						"Enter IP Address of the Server:",
 						"Welcome to the card game",
 						JOptionPane.QUESTION_MESSAGE);
+		if(input == null){
+			System.exit(0);
+		}
 		return input.length() == 0 ? "localhost" : input;
 	}
 	

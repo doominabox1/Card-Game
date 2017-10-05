@@ -36,6 +36,8 @@ public class Driver {
 			System.exit(0);
 		}
 	}
+	
+	
 	public static void server() throws IOException{
 		Server server = new Server(PORT);
 		mainFrame.add(server.getPanel());
