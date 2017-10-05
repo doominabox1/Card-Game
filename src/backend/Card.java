@@ -11,12 +11,11 @@ public class Card {
 	
 	public static final int CARD_WIDTH = 72;
 	public static final int CARD_HEIGHT = 96;
-	int pos;
-	String[] suits = {"Club", "Spade", "Heart", "Diamond"};
+	int cardNumber;
 	BufferedImage face = null; 
 	
 	public Card(int pos) {
-		this.pos = pos;
+		this.cardNumber = pos;
 		
 		try {
 			BufferedImage sheet = ImageIO.read(new File("res\\cards.png"));
@@ -26,33 +25,31 @@ public class Card {
 		}
 	}
 	
+	/**
+	 *	@return The numerical representation of the card's suit, 0-3 
+	 */
 	public int getSuit() {
-		return (pos/13);
+		return (cardNumber/13);
 	}
-	public String getSuitString() {
-		return suits[getSuit()];
-	}
+	
+	/**
+	 *	@return The numerical value of the card for scorekeeping 
+	 */
 	public int getValue() {
-		return (pos % 13 + 2);
+		return (cardNumber % 13 + 2);
 	}
-	public String getValString() {
-		switch(pos % 13 + 2) {
-		case 11: return "J";
-		case 12: return "Q";
-		case 13: return "K";
-		case 14: return "A";
-		default: return Integer.toString(pos % 13 + 2);
-		}
-	}
+	
 	@Override
 	public boolean equals(Object o) {
 	    if(o.getClass() != getClass()){
 	    	return false;
 	    }
-	    return pos == ((Card)o).pos; 
+	    return cardNumber == ((Card)o).cardNumber; 
 	}
 
-
+	/**
+	 *	@return The picture of the face of the card, created when 
+	 */
 	public Image getFace() {
 		return face;
 	}

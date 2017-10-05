@@ -44,10 +44,14 @@ public class ServerPanel extends JPanel{
 		add( Box.createVerticalGlue() );
 	}
 	
+	/**
+	 * Sets the number of connected players to display to the user.
+	 * 
+	 * @param players Number of players. 
+	 */
 	public void setPlayersConnected(int players){
 		usersLabel.setText(players + "/3 connected.");
 	}
-	
 	
 	/**
 	 * @return The external IP of the computer or null if there was an error.

@@ -42,7 +42,7 @@ public class Player {
 	
 	public boolean hasCard(int cardNumber){
 		for(Card c : hand){
-			if(c.pos == cardNumber){
+			if(c.cardNumber == cardNumber){
 				return true;
 			}
 		}
@@ -118,7 +118,7 @@ public class Player {
 			if(c == null){
 				output += -1 + " ";
 			}else{
-				output += c.pos + " ";
+				output += c.cardNumber + " ";
 			}
 		}
 		return output.trim();
@@ -139,7 +139,7 @@ public class Player {
 	private String getHandString(){
 		String output = "";
 		for(Card c : hand){
-			output += c.pos + " ";
+			output += c.cardNumber + " ";
 		}
 		return output.trim();
 	}

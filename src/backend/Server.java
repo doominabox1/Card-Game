@@ -109,7 +109,7 @@ public class Server {
 								
 								Card chosenCard = new Card(Integer.parseInt(parts[1]));	// Card number sent in the message
 								
-								if(!players.get(turn).hasCard(chosenCard.pos)){continue;}	// If the player does not have the card they chose, error
+								if(!players.get(turn).hasCard(chosenCard.cardNumber)){continue;}	// If the player does not have the card they chose, error
 								
 								if(turn == leader){
 									leadingSuit = chosenCard.getSuit();
@@ -141,6 +141,10 @@ public class Server {
 			player.writer.println(message);
 		}
 	}
+	
+	/**
+	 * Update all the player's info and send their data packet to their clients
+	 */
 	private void updateClients(){
 		for(int i = 0; i < players.size(); i++){
 			players.get(i).serverStatus = players.size();
@@ -226,6 +230,9 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * @return The GUI that the server handles 
+	 */
 	public ServerPanel getPanel(){
 		return panel;
 	}

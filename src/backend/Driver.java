@@ -37,14 +37,26 @@ public class Driver {
 		}
 	}
 	
-	
+	/**
+	 * If the user chose server, make a new server object and add it's panel to the the main panel
+	 */
 	public static void server() throws IOException{
 		Server server = new Server(PORT);
 		mainFrame.add(server.getPanel());
 	}
+	
+	/**
+	 * If the user chose client, make a new server object and add it's panel to the the main panel when it has contacted the server
+	 */
 	public static void client() throws IOException{
 		new Client(PORT);
 	}
+	
+	/**
+	 * Once the client has contacted the server, show the client panel.
+	 * 
+	 * @param client The client object to show
+	 */
 	public static void showClient(Client client){
 		mainFrame.add(client.getPanel());
 		mainFrame.pack();

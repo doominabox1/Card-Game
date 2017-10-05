@@ -11,17 +11,12 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 
 public class Client {
-	public enum Players {
-	    PLAYER_ONE, PLAYER_TWO, PLAYER_THREE
-	}
 	public enum ScoreType {
 	    TRICKS, CARD_TOTAL
 	}
 	
 	ClientPanel panel;
 	public Player player;
-	
-	// Game data moved to player
 	
 	int port;
 	BufferedReader in;
@@ -33,10 +28,18 @@ public class Client {
 		listen();
 	}
 	
+	/**
+	 * Sends the user's choice of card on their turn.
+	 * @param What card number (0-51)
+	 */
 	public void sendCard(int pos){
-		out.println(player.hand.get(pos).pos);
+		out.println(player.hand.get(pos).cardNumber);
 	}
 	
+	/**
+	 * Makes a new thread to handle server listening. 
+	 * @throws IOException
+	 */
 	private synchronized void listen() throws IOException{
 		
 		// Make connection and initialize streams
@@ -82,6 +85,10 @@ public class Client {
 		}.start();
 	}
 	
+	/**
+	 * Ask's the user what server address to connect to
+	 * @return The address if the user entered one. If it is blank, the address defaults to 'localhost' 
+	 */
 	private String getServerAddress() {
 		String input = JOptionPane.showInputDialog(
 						null,
@@ -94,6 +101,9 @@ public class Client {
 		return input.length() == 0 ? "localhost" : input;
 	}
 	
+	/**
+	 * @return The GUI that the server handles 
+	 */
 	public ClientPanel getPanel(){
 		return panel;
 	}
