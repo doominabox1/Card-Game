@@ -45,7 +45,6 @@ public class ClientPanel extends JComponent{
 			int stringSize = g.getFontMetrics().stringWidth(message);
 			g.drawString(message, width/2 - stringSize/2, height/2);
 		}else{	// Draw the board
-			
 			// Draw cards in the river and the score board
 			int cardPos = (width / 2) - Card.CARD_WIDTH - Card.CARD_WIDTH/2 - LARGE_PADDING;
 			g.setColor(new Color(0, 0, 0));
@@ -79,20 +78,40 @@ public class ClientPanel extends JComponent{
 			}
 			
 			// Draw cards in hand 
+			Card[] playedCards = client.player.playedCards;
+			int leadingCard = -1;
+			if(playedCards[0] != null && playedCards[2] == null){
+				leadingCard = 0;
+			}else if(playedCards[0] == null && playedCards[1] != null){
+				leadingCard = 1;
+			}else if(playedCards[1] == null && playedCards[2] != null){
+				leadingCard = 2;
+			}
+			boolean isMyTurn = client.player.turn == client.player.playerNumber;
+			boolean shouldDither = leadingCard >= 0 && client.player.hasSuit(client.player.playedCards[leadingCard].getSuit());
 			cardPos = SMALL_PADDING*2;
 			if(client.player.hand.size() > 0){
 				for(int i = 0; i < client.player.hand.size(); i++){
-					if(glowPos >= 0 && glowPos == i){
+					boolean cardInvalid = !isMyTurn || (shouldDither && client.player.hand.get(i).getSuit() != client.player.playedCards[leadingCard].getSuit());
+					if(!cardInvalid && glowPos >= 0 && glowPos == i){
 						g.setColor(new Color(255, 0, 0));
 						g.fillRect(cardPos - SMALL_PADDING/2, height - Card.CARD_HEIGHT - SMALL_PADDING*2 - SMALL_PADDING/2, Card.CARD_WIDTH + SMALL_PADDING, Card.CARD_HEIGHT + SMALL_PADDING);
 					}
 					g.drawImage(client.player.hand.get(i).getFace(), cardPos, height - Card.CARD_HEIGHT - SMALL_PADDING*2, null);
+					
+					if(cardInvalid){
+						g.setColor(new Color(255, 255, 255, 200));
+						g.fillRect(cardPos, height - Card.CARD_HEIGHT - SMALL_PADDING*2, Card.CARD_WIDTH, Card.CARD_HEIGHT);
+					}
 					cardPos += Card.CARD_WIDTH + SMALL_PADDING;
 				}
 			}
 		}
 	}
 	
+	/**
+	 * Mouse listener to listen for user's clicks on the panel. Also gets mouse position data to highlight what card is selected. 
+	 */
 	static class CPMouseListener extends MouseAdapter {
 		@Override 
 		public void mouseClicked(MouseEvent e) {

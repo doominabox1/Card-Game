@@ -11,7 +11,7 @@ public class Card {
 	
 	public static final int CARD_WIDTH = 72;
 	public static final int CARD_HEIGHT = 96;
-	int cardNumber;
+	public int cardNumber;
 	BufferedImage face = null; 
 	
 	public Card(int pos) {

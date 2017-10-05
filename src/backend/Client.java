@@ -70,6 +70,18 @@ public class Client {
 						if(line.charAt(0) == '{'){
 							player.updatePlayerData(line);
 						}
+						if(line.contains("winner:::")){
+							int winner = Integer.parseInt(line.split(":::")[1]);
+							int response = -1;
+							if(winner == player.playerNumber){
+								response = JOptionPane.showConfirmDialog(null, "Congratulations, you win! Play again?");
+							}else{
+								response = JOptionPane.showConfirmDialog(null, "Player " + (winner+1) + " wins! Play again?", "Game Over.", JOptionPane.YES_NO_OPTION);
+							}
+							if(response != JOptionPane.YES_OPTION){
+								System.exit(0);
+							}
+						}
 						panel.repaint();
 					}
 				}catch(IOException e){

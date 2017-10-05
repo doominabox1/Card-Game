@@ -1,12 +1,7 @@
 package backend;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-
-import javax.imageio.ImageIO;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,10 +13,6 @@ public class Player {
 	public static final int TRICKS = 0;
 	public static final int CARD_TOTAL = 1;
 	
-	public final int PLAYER_ONE = 0;
-	public final int PLAYER_TWO = 1;
-	public final int PLAYER_THREE = 2;
-
 	//	Game Data
 	public ArrayList<Card> hand = new ArrayList<Card>();
 	public int turn;	// Who's turn it is
@@ -40,6 +31,11 @@ public class Player {
 		score = new int[][] {{0,0},{0,0},{0,0}};
 	}
 	
+	/**
+	 * Checks to see if the player has a given card.
+	 * @param cardNumber What card to check for.
+	 * @return True if the player has the card
+	 */
 	public boolean hasCard(int cardNumber){
 		for(Card c : hand){
 			if(c.cardNumber == cardNumber){
@@ -48,6 +44,12 @@ public class Player {
 		}
 		return false;
 	}
+	
+	/**
+	 * Checks to see if the player has a given suit.
+	 * @param suit What suit to check for.
+	 * @return True if the player has the suit
+	 */
 	public boolean hasSuit(int suit){
 		for(Card c : hand){
 			if(c.getSuit() == suit){
@@ -57,6 +59,10 @@ public class Player {
 		return false;
 	}
 	
+	/**
+	 * Gets a string representing all player information in JSON format
+	 * @return
+	 */
 	@SuppressWarnings("unchecked")
 	public String getPlayerPacket(){	// Used by the server to send user data to client
 		JSONObject container = new JSONObject();
@@ -70,6 +76,12 @@ public class Player {
 		
 		return container.toJSONString();
 	}
+	
+	/**
+	 * Update all player data given a JSON string.
+	 * @param data Entire player packet encoded in JSON
+	 * @return True if data parsed successfully.
+	 */
 	public boolean updatePlayerData(String data){	// Used by the client to update player info
 		
 		JSONParser parser = new JSONParser();
@@ -90,6 +102,11 @@ public class Player {
         parseScoreString((String)jsonData.get("score"));
         return true;
 	}
+	
+	/**
+	 * Turn 2D score array into a string
+	 * @return A string of score numbers separated by spaces and a colon
+	 */
 	private String getScoreString(){
 		String output = "";
 		for(int i = 0; i < score.length; i++){
@@ -101,6 +118,11 @@ public class Player {
 		}
 		return output.trim();
 	}
+	
+	/**
+	 * Parse score string into 2D array
+	 * @param inputScoreString String to parse
+	 */
 	private void  parseScoreString(String inputScoreString){
 		String[] groups = inputScoreString.split(":");
 		String[] tricks = groups[TRICKS].split(" ");
@@ -112,6 +134,11 @@ public class Player {
 			score[i][CARD_TOTAL] = Integer.parseInt(cardTotal[i]);
 		}
 	}
+	
+	/**
+	 * Turns played cards array into a string of card numbers separated by spaces
+	 * @return String representing card array
+	 */
 	private String getPlayedCardString(){
 		String output = "";
 		for(Card c : playedCards){
@@ -123,6 +150,11 @@ public class Player {
 		}
 		return output.trim();
 	}
+	
+	/**
+	 * Parse played cards string into an array
+	 * @param inputPlayedCard String to parse
+	 */
 	private void parsePlayedCardString(String inputPlayedCard){
 		String[] input = inputPlayedCard.split(" ");
 		playedCards = new Card[3];
@@ -136,6 +168,11 @@ public class Player {
 			
 		}
 	}
+	
+	/**
+	 * Turn hand arraylist into a string of numbers separated by spaces
+	 * @return
+	 */
 	private String getHandString(){
 		String output = "";
 		for(Card c : hand){
@@ -143,6 +180,10 @@ public class Player {
 		}
 		return output.trim();
 	}
+	/**
+	 * Parse a string of integers into card objects 
+	 * @param inputHand	String to parse
+	 */
 	private void parseHandString(String inputHand){
 		hand = new ArrayList<Card>();
 		if(inputHand.length() < 1){
@@ -159,6 +200,10 @@ public class Player {
 		return "Player " + playerNumber;
 	}
 
+	/**
+	 * Removes given card from players hand.
+	 * @param chosenCard Card to remove.	
+	 */
 	public void removeCard(Card chosenCard) {
 		Card cardToRemove = null;
 		for(Card c : hand){

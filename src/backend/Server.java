@@ -121,7 +121,7 @@ public class Server {
 								if(++turn >= 3) turn = 0;
 								updateClients();
 							}
-							broadcastMessage("Player " + winningPlayer + " wins.");
+							broadcastMessage("winner:::" + winningPlayer);
 							try { Thread.sleep(5000); } catch (InterruptedException e) { e.printStackTrace(); }
 							playedCards = new Card[3];
 							score = new int[][] {{0,0},{0,0},{0,0}}; 
