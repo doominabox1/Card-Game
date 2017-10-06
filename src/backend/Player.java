@@ -17,8 +17,8 @@ public class Player {
 	public ArrayList<Card> hand = new ArrayList<Card>();
 	public int turn;	// Who's turn it is
 	public Card[] playedCards;	// Cards on table
-	public int[][] score; // score[PLAYER_ONE][TRICKS] score[PLAYER_TWO][CARD_TOTAL] for example
-	public int serverStatus = 0; // Players connected, 3 means the game can start
+	public int[][] score;	// score[PLAYER_ONE][TRICKS] score[PLAYER_TWO][CARD_TOTAL] for example
+	public int serverStatus = 0;	// Players connected, 3 means the game can start
 	public int playerNumber;	// What player they are
 	//	Game Data
 	

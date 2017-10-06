@@ -33,7 +33,7 @@ public class Server {
 					ServerSocket listener = new ServerSocket(port);
 					try {
 						while(true){
-							while (players.size() < 3) {
+							while (players.size() < 3) {	// Wait for enough players
 								listener.setSoTimeout(1000);
 								try{
 									new Handler(listener.accept(), thisServer).start();
@@ -100,6 +100,7 @@ public class Server {
 								// Busy wait for a message from client
 								// The message should look like "0:::34" or in other words "player:::cardNum"
 								while(curMessage == null){try {Thread.sleep(100);} catch (InterruptedException e) {}}
+								
 								String inputMessage = curMessage; // Copy the message and set the client message to null
 								curMessage = null;
 								

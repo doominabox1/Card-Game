@@ -11,9 +11,6 @@ import java.net.Socket;
 import javax.swing.JOptionPane;
 
 public class Client {
-	public enum ScoreType {
-	    TRICKS, CARD_TOTAL
-	}
 	
 	ClientPanel panel;
 	public Player player;
@@ -58,7 +55,6 @@ public class Client {
 		}
 		
 		new Thread(){
-
 			public void run(){
 				try{
 					// Process all messages from server, according to the protocol.
@@ -74,7 +70,7 @@ public class Client {
 							int winner = Integer.parseInt(line.split(":::")[1]);
 							int response = -1;
 							if(winner == player.playerNumber){
-								response = JOptionPane.showConfirmDialog(null, "Congratulations, you win! Play again?");
+								response = JOptionPane.showConfirmDialog(null, "Congratulations, you win! Play again?", "Game Over.", JOptionPane.YES_NO_OPTION);
 							}else{
 								response = JOptionPane.showConfirmDialog(null, "Player " + (winner+1) + " wins! Play again?", "Game Over.", JOptionPane.YES_NO_OPTION);
 							}
